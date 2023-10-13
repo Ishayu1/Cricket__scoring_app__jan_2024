@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %} 
+{% block content %}
+    <body>
+        <!-- <img src="{{ url_for('static', filename=plot_filename) }}" alt="Runs Scored by Each Batsman"> -->
+
+        {% for innings in innings_data %}
+            <h2>{{ innings.bat_team_name }} Batting Scorecard</h2>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Batsman</th>
+                        <th>Runs</th>
+                        <th>Balls</th>
+                        <th>Fours</th>
+                        <th>Sixes</th>
+                        <th>Strike Rate</th>
+                        <th>Out Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, batsman in innings.bat_team_data.items() %}
+                    <tr>
+                        <td>{{ batsman['batName'] }}</td>
+                        <td>{{ batsman['runs'] }}</td>
+                        <td>{{ batsman['balls'] }}</td>
+                        <td>{{ batsman['fours'] }}</td>
+                        <td>{{ batsman['sixes'] }}</td>
+                        <td>{{ batsman['strikeRate'] }}</td>
+                        <td>{{ batsman['outDesc'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>{{ innings.bowl_team_name }} Bowling Scorecard</h2>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Bowler</th>
+                        <th>Overs</th>
+                        <th>Maidens</th>
+                        <th>Runs Given</th>
+                        <th>Wickets</th>
+                        <th>Economy</th>
+                        <th>No Balls</th>
+                        <th>Wides</th>
+                        <th>Dots</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, bowler in innings.bowl_team_data.items() %}
+                    <tr>
+                        <td>{{ bowler['bowlName'] }}</td>
+                        <td>{{ bowler['overs'] }}</td>
+                        <td>{{ bowler['maidens'] }}</td>
+                        <td>{{ bowler['runs'] }}</td>
+                        <td>{{ bowler['wickets'] }}</td>
+                        <td>{{ bowler['economy'] }}</td>
+                        <td>{{ bowler['no_balls'] }}</td>
+                        <td>{{ bowler['wides'] }}</td>
+                        <td>{{ bowler['dots'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Extras</h3>
+            <ul>
+                <li>No Balls: {{ innings.extras_data['noBalls'] }}</li>
+                <li>Byes: {{ innings.extras_data['byes'] }}</li>
+                <li>Leg Byes: {{ innings.extras_data['legByes'] }}</li>
+                <li>Wides: {{ innings.extras_data['wides'] }}</li>
+                <li>Total Extras: {{ innings.extras_data['total'] }}</li>
+            </ul>
+
+            <h3>{{ innings.bat_team_name }} Batting Wickets</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Batsman</th>
+                        <th>Wicket Number</th>
+                        <th>Over</th>
+                        <th>Runs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, wicket in innings.wickets_data.items() %}
+                    <tr>
+                        <td>{{ wicket['batName'] }}</td>
+                        <td>{{ wicket['wktNbr'] }}</td>
+                        <td>{{ wicket['wktOver'] }}</td>
+                        <td>{{ wicket['wktRuns'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        {% endfor %}
+    </body>
+{% endblock %}

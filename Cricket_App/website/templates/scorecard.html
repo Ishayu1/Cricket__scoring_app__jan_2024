@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %}Ball Update{% endblock %}
+
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cricket Match Scorecard</title>
+        <style>
+            table {
+                width: 80%;
+                border-collapse: collapse;
+                margin: 20px auto;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h2 style="text-align:center;">Cricket Match Scorecard</h2>
+        <h3 style="text-align:center;">Team A vs Team B</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Runs</th>
+                    <th>Balls</th>
+                    <th>4s</th>
+                    <th>6s</th>
+                    <th>Strike Rate</th>
+                    <!-- <th>Out By</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for batsman, runs_scored, balls_faced, fours, sixes, strike_rate in batsman_scores %}
+                <tr>
+                    <td>{{ batsman }}</td>
+                    <td>{{ runs_scored }}</td>
+                    <td>{{ balls_faced }}</td>
+                    <td>{{ fours }}</td>
+                    <td>{{ sixes }}</td>
+                    <td>{{ "%.2f"|format(strike_rate) }}</td>
+                    <!-- <td>Fill with Out By</td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 style="text-align:center;">Bowling Scorecard</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Bowler Name</th>
+                    <th>Overs</th>
+                    <th>Runs Given</th>
+                    <th>Wickets</th>
+                    <th>Economy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bowler, overs, runs_given, wickets, economy in bowler_scores %}
+                <tr>
+                    <td>{{ bowler }}</td>
+                    <td>{{ "%.2f"|format(overs) }}</td>
+                    <td>{{ runs_given }}</td>
+                    <td>{{ wickets }}</td>
+                    <td>{{ "%.2f"|format(economy) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>    
+        </table>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; text-align: center;">
+                <h3>Runs per over</h3>
+                <img src="{{ url_for('static', filename='images/runs_per_over_' ~ match_id ~ '.png') }}" alt="chart" height="500" width="500">
+
+            </div>
+            <div style="flex: 1; text-align: center;">
+                <h3>Runs per over</h3>
+                <img src="{{ url_for('static', filename='images/fours_sixes_per_over_' ~ match_id ~ '.png') }}" alt="chart" height="500" width="500">
+            </div>
+        </div>
+        
+    </body>
+{% endblock %}

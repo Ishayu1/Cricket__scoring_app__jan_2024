@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %} 
+{% block content %}
+<div>
+    <a href="{{ url_for('auth.fetch_api') }}" class="btn btn-primary">Fetch Latest Matches</a>
+    <!-- Search bar and dropdown -->
+    <div class="search-container">
+        <select id="filterType" class="form-control">
+            <option value="date">Date</option>
+            <option value="tournament">Tournament Name</option>
+            <option value="team">Team</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterTable()">
+    </div>
+    
+    <table class="table" id="matchesTable">
+       <tr>
+        <th>Series Name</th>
+        <th>Date</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+        <th>Outcome</th>
+       </tr>
+       {% for match in match_data %}
+       {% for z in match %}
+       <tr>
+        {% for q in z %}
+        {% if q == "matchInfo" %}
+            <td>{{ z[q]["seriesName"] }}</td>
+            <td>{{ z[q]["startDate"]|format_timestamp }}</td>
+            <td>{{ z[q]["team1"]["teamName"] }}</td>
+            <td>{{ z[q]["team2"]["teamName"] }}</td>
+            <td>
+                {% if z[q]["status"] != "Match abandoned without a ball bowled" %}
+                    <a href="/get_scoreboard/{{ z[q]['matchId'] }}">{{ z[q]["status"] }}</a>
+                {% else %}
+                    {{ z[q]["status"] }}
+                {% endif %}
+            </td>
+        {% endif %}
+    {% endfor %}
+    
+       </tr>
+       {% endfor %}
+       {% endfor %}
+    </table>
+</div>
+    <script>
+        function filterTable() {
+            let input = document.getElementById("searchInput");
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById("matchesTable");
+            let trs = table.getElementsByTagName("tr");
+            let filterType = document.getElementById("filterType").value;
+        
+            for (let i = 1; i < trs.length; i++) { // start from 1 to skip the header row
+                let tr = trs[i];
+                let tds = tr.getElementsByTagName("td");
+                let shouldShow = false;
+        
+                switch (filterType) {
+                    case "date":
+                        shouldShow = tds[1].textContent.toLowerCase().includes(filter);
+                        break;
+                    case "tournament":
+                        shouldShow = tds[0].textContent.toLowerCase().includes(filter);
+                        break;
+                    case "team":
+                        shouldShow = tds[2].textContent.toLowerCase().includes(filter) || tds[3].textContent.toLowerCase().includes(filter);
+                        break;
+                }
+        
+                tr.style.display = shouldShow ? "" : "none";
+            }
+        }
+    </script>
+{% endblock %}

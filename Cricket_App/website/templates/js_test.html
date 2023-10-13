@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>Introduction to JavaScript</title>
+  </head>
+  <body>
+    <h1 id="title">JavaScript is Fun</h1>
+    <h2 onmouseover="tasks()">Click here</h2>
+    <h2 id="test">Click </h2>
+    <form id="form">
+      <input type="text" name="username" class="form-input" id="username" placeholder="Enter Username" onchange="check_username()">
+      <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password"onkeyup = "check_password()">
+      <input type="password" name="confirm_password" class="form-input" id="confirm_password"
+          placeholder="Confirm Password" onkeyup = "check_password()">
+      <button id="register">Register</button>
+    </form>
+    <p id="error"></p>  
+    <script>
+      var name = 'David' ;
+      
+      x = document.getElementById("title");
+      console.log(x);
+      
+    //   changes the value within the HTML tag with id title
+      x.innerHTML = 'Name: ' + name;
+      
+      // changes the CSS of the HTML tag with id title
+      x.style.color = 'white';
+      x.style.backgroundColor = 'black';
+      x.style.padding = "10px";
+      
+      tasks = ()=> x.innerHTML = "Functions";
+      
+      element = document.getElementById("test");
+      
+      element.addEventListener("click", function(){ alert("Hello World!"); });
+      
+      user_error = document.getElementById("error");
+      username = document.getElementById("username");
+      password = document.getElementById("password");
+      confirm_password = document.getElementById("confirm_password");
+      register_button = document.getElementById("register");
+      
+        
+        // update error message
+      
+
+      // username.addEventListener("change", check_username());
+      function check_username(){
+        user_error.innerHTML="test_change";
+        
+      }
+
+      function check_password(){
+        
+        if(password.value != confirm_password.value){
+          user_error.innerHTML = " Passwords do not match";
+          register_button.disabled = true;
+        }
+        else{
+          user_error.innerHTML = "";
+          register_button.disabled = false;
+        }
+        if(password.value.length<8){
+          user_error.innerHTML = " Passwords must be at least 8 characters";
+          register_button.disabled = true;
+        }
+        else{
+          user_error.innerHTML = "";
+          register_button.disabled = false;
+        }
+        console.log(password.value)
+        console.log(confirm_password.value)
+
+      }
+
+  
+
+    </script>
+   
+  </body>
+</html>

@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block title %}Match Setup{% endblock %}
+{% block content %}
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+                <div class="text-center">
+                  <img src="https://i.pinimg.com/736x/46/cf/04/46cf0487950771affc44ac81c0c7b663--cricket-sport-cricket-bat.jpg" style="width: 185px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">Match Setup</h4>
+                  </div>
+                  <form method="POST">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="team1Name">Team 1 Name</label>
+                      <select id="team1Name" class="form-control" name="team1Name" required>
+                          {% for team in teams %}
+                              <option value="{{ team.team }}">{{ team }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class="form-outline mb-4">
+                      <label class="form-label" for="team2Name">Team 2 Name</label>
+                      <select id="team2Name" class="form-control" name="team2Name" required>
+                          {% for team in teams %}
+                              <option value="{{ team.team }}">{{ team }}</option>
+                          {% endfor %}
+                      </select>
+                  </div> 
+                  <div class="form-outline mb-4">
+                    <input type="number" id="overs" class="form-control" placeholder="Overs" name="overs" required min="0">
+                    <label class="form-label" for="overs">Overs</label>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input type="number" id="wideRuns" class="form-control" placeholder="Wide Runs" name="wideRuns" required min="0">
+                    <label class="form-label" for="wideRuns">Wide Runs</label>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input type="number" id="noBallRuns" class="form-control" placeholder="No Ball Runs" name="noBallRuns" required min="0">
+                    <label class="form-label" for="noBallRuns">No Ball Runs</label>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="matchDate">Match Date</label>
+                    <input type="date" id="matchDate" class="form-control" name="matchDate" min="{{ current_date }}" required>
+                  </div>
+
+                  <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" value="true" id="freeHits" name="freeHits">
+                    <label class="form-check-label" for="freeHits">Free Hits</label>
+                  </div>
+                  <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" value="true" id="wide_reball" name="wide_reball">
+                    <label class="form-check-label" for="wide_reball">Wide Reball</label>
+                    <!-- ... existing form fields ... -->
+  
+
+                  </div>
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Create Match</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">This is a prototype of the match setup page</h4>
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchListModal">View Match List</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Match List Modal -->
+  <div class="modal fade" id="matchListModal" tabindex="-1" aria-labelledby="matchListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="matchListModalLabel">Match List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Match ID</th>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Match Date</th>
+                <th>Overs</th>
+                <th>Wide Runs</th>
+                <th>No Ball Runs</th>
+                <th>Free Hits</th>
+                <th>Wide Reball</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for match in matches %}
+              <tr>
+                <td>{{ match.match_id }}</td>
+                <td>{{ match.team1 }}</td>
+                <td>{{ match.team2 }}</td>
+                <td>{{ match.match_date }}</td>
+                <td>{{ match.overs }}</td>
+                <td>{{ match.wide_runs }}</td>
+                <td>{{ match.no_ball_runs }}</td>
+                <td>{% if match.free_hits %}Yes{% else %}No{% endif %}</td>
+                <td>{% if match.wide_reball %}Yes{% else %}No{% endif %}</td>
+                <td>
+                  {% if match.match_date == current_date %}
+                    <a class="btn btn-secondary" href="/ball_update/{{match.match_id}}">Start match</a>
+                  {% elif match.match_date < current_date %}
+                    <form>
+                      <a class="btn btn-secondary" href="/scoreboard_test/{{match.match_id}}">View scoreboard</a>
+                    </form>
+                  {% else %}
+                    <form>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Not match day yet</button>
+                    </form>
+                  {% endif %}
+                </td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
