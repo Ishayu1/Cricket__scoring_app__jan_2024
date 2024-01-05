@@ -1,0 +1,195 @@
+{% extends "layout.html" %}
+
+{% block title %}Ball Update{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <form method="POST">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Ball Update</h2>
+                {% set team1_status = "" %}
+                {% set team2_status = "" %}
+                {% if team_name == team1 %}
+                {% set team2_status = "disabled" %}
+                {% elif team_name == team2 %}
+                {% set team1_status = "disabled" %}
+                {% endif %}
+                
+                <!-- {{team_name}} -->
+                <h5>Batting team</h5>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="radio" value="{{team1}}" id="team1" name="team" {{team1_status}} required>
+                    <label class="form-check-label" for="team1">{{team1}}</label>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="radio" value="{{team2}}" id="team2" name="team" {{team2_status}} required>
+                    <label class="form-check-label" for="team2">{{team2}}</label>
+                </div>
+                <h3>Score: {{total_runs[0]}}/{{total_runs[1]}}</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Batsman</th>
+                            <th>Bowler</th>
+                            <th>Runs</th>
+                            <th>Extras</th>
+                            <th>Dismissals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select class="form-control" id="batsman" name="batsman" required>
+                                    {% for option in dropdown_options %}
+                                        {% if option[0] in out_players %}
+                                            <option class="player-option out" value="{{ option[0] }}" data-team="{{ option[2] }}">{{ option[1] }}</option>
+                                        {% else %}
+                                            <option class="player-option" value="{{ option[0] }}" data-team="{{ option[2] }}">{{ option[1] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" id="bowler" name="bowler" required>
+                                    {% for option in dropdown_options %}
+                                        <option class="player-option" value="{{ option[0] }}" data-team="{{ option[2] }}">{{ option[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" id="runs" name="runs" required>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" id="extras" name="extras" required>
+                                    <option value="1">No extra</option>
+                                    <option value="2">Wide</option>
+                                    <option value="3">No ball</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" id="dismissals" name="dismissals" required>
+                                    <option value="1">No wicket</option> 
+                                    <option value="2">Bowled</option>
+                                    <option value="3">Caught</option>
+                                    <option value="4">Run out</option>
+                                    <option value="5">LBW</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit" name="add_ball" id="updateBallBtn" value="true" class="btn btn-primary">Update Ball</button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <h4>Update Log</h4>
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Over</th>
+                            <th>Ball</th>
+                            <th>Batsman</th>
+                            <th>Bowler</th>
+                            <th>Runs</th>
+                            <th>Extras</th>
+                            <th>Dismissals</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for update in updates %}
+                        <tr class="{% if update.Team_name == team1 %}team1-row{% elif update.Team_name == team2 %}team2-row{% endif %}">
+                            <td>{{ (loop.index + 5) // 6 }}</td>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <input type="text" name="batsman_{{ update.ball_ID }}" value="{{ update.batsman_firstname }} {{ update.batsman_lastname }}" style="width: 150px;">
+                            </td>
+                            <td>
+                                <input type="text" name="bowler_{{ update.ball_ID }}" value="{{ update.bowler_firstname }} {{ update.bowler_lastname }}"style="width: 150px;">
+                            </td>
+                            <td>
+                                <input type="number" name="runs_{{ update.ball_ID }}" value="{{ update.Runs }}"style="width: 40px;">
+                            </td>
+                            <td>
+                                <input type="text" name="extra_{{ update.ball_ID }}" value="{{ update.extra_type }}"style="width: 150px;">
+                            </td>
+                            <td>
+                                <input type="text" name="dismissal_{{ update.ball_ID }}" value="{{ update.Dismissal_type }}"style="width: 150px;">
+                            </td>
+                            <td>
+                                <button type="submit" name="update_id" value="{{ update.ball_ID }}">Update</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </form>
+  </div>
+  <script>
+    // Disable batsman and bowler dropdowns initially
+    var batsmanDropdown = document.getElementById('batsman');
+    var bowlerDropdown = document.getElementById('bowler');
+    batsmanDropdown.disabled = true;
+    bowlerDropdown.disabled = true;
+
+    // Define form elements
+    var formElements = [
+        batsmanDropdown,
+        bowlerDropdown,
+        // Add other form elements here
+    ];
+
+    document.getElementById('team1').addEventListener('change', function() {
+        updateDropdownOptions('batsman', this.value, true);
+        updateDropdownOptions('bowler', this.value, false);
+        updateFormState(true);
+    });
+
+    document.getElementById('team2').addEventListener('change', function() {
+        updateDropdownOptions('batsman', this.value, true);
+        updateDropdownOptions('bowler', this.value, false);
+        updateFormState(true);
+    });
+
+    function updateDropdownOptions(dropdownId, selectedTeam, enable) {
+        var dropdownOptions = document.getElementById(dropdownId).options;
+
+        for (var i = 0; i < dropdownOptions.length; i++) {
+            var option = dropdownOptions[i];
+            console.log(option.classList);
+            // Enable or disable options based on the condition
+            option.disabled = enable ? (option.getAttribute('data-team') !== selectedTeam) : (option.getAttribute('data-team') === selectedTeam);
+                        
+            // Check if the player is out based on the 'out' class and apply red color
+            if (option.classList.contains('out')) {
+                option.style.backgroundColor = 'red';
+                option.style.color = 'white';
+            } else {
+                // Reset the color if the player is not out
+                option.style.color = '';
+            }
+        }
+    }
+
+    function updateFormState(enable) {
+        // Enable or disable all form elements based on the condition
+        formElements.forEach(function(element) {
+            element.disabled = !enable;
+        });
+    }
+</script>
+
+
+{% endblock %}

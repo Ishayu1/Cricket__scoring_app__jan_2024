@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}Player Registration{% endblock %}
+{% block content %}
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <img src="https://i.pinimg.com/736x/46/cf/04/46cf0487950771affc44ac81c0c7b663--cricket-sport-cricket-bat.jpg"
+                    style="width: 185px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">Player Registration</h4>
+                </div>
+
+                
+
+                <form method="POST">
+                  
+                  <div class="form-outline mb-4">
+                    <select id="teamName" class="form-select" name="teamName" required>
+                      <option value="" selected disabled>Select a Team</option>
+                        {% for team in teams %}
+                            <option value="{{ team[0] }}">{{ team[0] }}</option>
+                        {% endfor %}
+                    </select>
+                    <label class="form-label" for="teamName">Team Name</label>
+                  </div>
+
+                
+                  <div class="form-outline mb-4">
+                    <input type="text" id="firstName" class="form-control" placeholder="First Name" name="firstName" required>
+                    <label class="form-label" for="firstName">First Name</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" name="lastName" required>
+                    <label class="form-label" for="lastName">Last Name</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <select id="battingStyle" class="form-select" name="battingStyle" required>
+                      <option value="">Select Batting Style</option>
+                      <option value="Right-handed">Right-handed</option>
+                      <option value="Left-handed">Left-handed</option>
+                    </select>
+                    <label class="form-label" for="battingStyle">Batting Style</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <select id="bowlingStyle" class="form-select" name="bowlingStyle" required>
+                      <option value="">Select Bowling Style</option>
+                      <option value="Left arm fast bowling">Left arm fast</option>
+                      <option value="Left arm spin bowling">Left arm spin</option>
+                      <option value="Right arm fast bowling">Right arm fast</option>
+                      <option value="Right arm spin bowling">Right arm spin</option>
+                    </select>
+                    <label class="form-label" for="bowlingStyle">Bowling Style</label>
+                  </div>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Register</button>
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-black px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">This is a prototype of the player registration page</h4>
+                <div class="d-flex align-items-center justify-content-center pb-4">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerListModal">View Player List</button>
+                  <a href="/test_api" class="btn btn-primary">Export data</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Player List Modal -->
+  <div class="modal fade" id="playerListModal" tabindex="-1" aria-labelledby="playerListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="playerListModalLabel">Player List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Player ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Batting Style</th>
+                <th>Bowling Style</th>
+                <th>Date Created</th>
+                <th>Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for player in players %}
+              <tr>
+                <td>{{ player.player_id }}</td>
+                <td>{{ player.firstname }}</td>
+                <td>{{ player.lastname }}</td>
+                <td>{{ player.batting_style }}</td>
+                <td>{{ player.bowling_style }}</td>
+                <td>{{ player.date_created }}</td>
+                <td>{{player.team}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

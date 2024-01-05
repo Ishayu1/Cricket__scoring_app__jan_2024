@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %} 
+{% block content %}
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <img src="https://i.pinimg.com/736x/46/cf/04/46cf0487950771affc44ac81c0c7b663--cricket-sport-cricket-bat.jpg"
+                    style="width: 185px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">Cricket scoring app</h4>
+                </div>
+
+                <form method="POST">
+                  <p>Please create your account</p>
+
+                  <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control"
+                      placeholder="Phone number or email address" name="email" required/>
+                    <label class="form-label" for="email">Email</label>
+                  </div>
+ 
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password" class="form-control" name="password" required/>
+                    <label class="form-label" for="password">Password</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password1" class="form-control" name="password1" required/>
+                    <label class="form-label" for="password1">Confirm  password</label>
+                  </div>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Sign Up</button>
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %} 

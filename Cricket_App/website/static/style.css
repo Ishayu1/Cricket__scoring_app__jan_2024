@@ -1,0 +1,63 @@
+.outcome{
+    display:flex !important;
+}
+
+html, body {
+    font-family: 'Arial', sans-serif;
+    background: url("/static/images/triangle-mosaic.webp");
+    height: 100%; /* This ensures the background covers the full viewport */
+}
+.gradient-form {
+    background-color: #eee;
+    background-image: url("/static/images/triangle-mosaic.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+
+h2, h3 {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.navbar-primary .navbar-nav .nav-link {
+    color: #ffffff; /* This sets the text color to white */
+}
+
+.navbar-primary .navbar-toggler-icon {
+    filter: invert(1); /* This inverts the color of the navbar toggler icon to make it visible against the blue background */
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+}
+
+.team1-row {
+    background-color: #FFCCCC; /* Light red for team1 */
+}
+
+.team2-row {
+    background-color: #CCCCFF; /* Light blue for team2 */
+}
+
